@@ -242,8 +242,9 @@ Supported values are `table`, `text`, and `json`. Defaults to `text` for non-int
 // |<<runtime-mgr application revert-runtime>>| Reverts application to its previous runtime
 |<<runtime-mgr cloudhub-application download-logs>>| Download application logs to specified directory
 |<<runtime-mgr cloudhub-application tail-logs>>| Tail application logs
-|<<runtime-mgr cloudhub-application upgrade-runtime>>| Upgrades application runtime to the latest patch version or if a version if specified, to that version.
-|<<runtime-mgr cloudhub-application downgrade-runtime>>| Downgrades application runtime to the previous runtime version or if a version is specified, to that version.
+|<<runtime-mgr cloudhub-application copy>>| Copies a CloudHub application
+// |<<runtime-mgr cloudhub-application upgrade-runtime>>| Upgrades application runtime to the latest patch version or if a version if specified, to that version.
+// |<<runtime-mgr cloudhub-application downgrade-runtime>>| Downgrades application runtime to the previous runtime version or if a version is specified, to that version.
 |===
 
 === Commands for Managing your Locally Deployed Applications Managed by Runtime Manager
@@ -254,16 +255,17 @@ In order for the Anypoint Platform CLI to recognize your target servers, each se
 [%header,cols="35a,65a"]
 |===
 |Command |Description
-|<<runtime-mgr standalone-applications artifact>> | Downloads application artifact binary
-|<<runtime-mgr standalone-applications deploy>> | Deploys a new application to an on-premises server, server group or cluster
-|<<runtime-mgr standalone-applications describe-json>> | Shows a raw on-premises application JSON response
-|<<runtime-mgr standalone-applications modify>> | Changes an on-premises application artifact
-|<<runtime-mgr standalone-applications start>> | Starts an on-premises application
-|<<runtime-mgr standalone-applications delete>> | Deletes an on-premises application
-|<<runtime-mgr standalone-applications describe>> | Shows detailed info of an on-premises application
-|<<runtime-mgr standalone-applications list>> | Lists all applications in the environment
-|<<runtime-mgr standalone-applications restart>> | Restarts an on-premises application
-|<<runtime-mgr standalone-applications stop>> | Stops an on-premises application
+|<<runtime-mgr standalone-application artifact>> | Downloads application artifact binary
+|<<runtime-mgr standalone-application deploy>> | Deploys a new application to an on-premises server, server group or cluster
+|<<runtime-mgr standalone-application describe-json>> | Shows a raw standalone application JSON response
+|<<runtime-mgr standalone-application modify>> | Changes a standalone application artifact
+|<<runtime-mgr standalone-application start>> | Starts an standalone application
+|<<runtime-mgr standalone-application delete>> | Deletes an standalone application
+|<<runtime-mgr standalone-application describe>> | Shows detailed info of a standalone application
+|<<runtime-mgr standalone-application list>> | Lists all standalone applications in the environment
+|<<runtime-mgr standalone-application restart>> | Restarts a standalone application
+|<<runtime-mgr standalone-application stop>> | Stops a standalone application
+|<<runtime-mgr standalone-application copy>> | Copies a standalone application
 |===
 
 === Commands for Managing Your Local PCF Deployed Applications
@@ -271,15 +273,15 @@ In order for the Anypoint Platform CLI to recognize your target servers, each se
 [%header,cols="35a,65a"]
 |===
 |Command |Description
-|<<runtime-mgr pcf-applications delete>> | Deletes PCF application
-|<<runtime-mgr pcf-applications describe>> | Shows detailed info of PCF application
-|<<runtime-mgr pcf-applications list>> | Lists all PCF applications in the environment
-|<<runtime-mgr pcf-applications restart>> | Restarts PCF application
-|<<runtime-mgr pcf-applications stop>> | Stops PCF application
-|<<runtime-mgr pcf-applications deploy>> | Deploys a new application to PCF space
-|<<runtime-mgr pcf-applications describe-json>> | Shows raw PCF application JSON response
-|<<runtime-mgr pcf-applications modify>> | Edits an application deployed to PCF space
-|<<runtime-mgr pcf-applications start>> | Starts PCF application
+|<<runtime-mgr pcf-application delete>> | Deletes PCF application
+|<<runtime-mgr pcf-application describe>> | Shows detailed info of PCF application
+|<<runtime-mgr pcf-application list>> | Lists all PCF applications in the environment
+|<<runtime-mgr pcf-application restart>> | Restarts PCF application
+|<<runtime-mgr pcf-application stop>> | Stops PCF application
+|<<runtime-mgr pcf-application deploy>> | Deploys a new application to PCF space
+|<<runtime-mgr pcf-application describe-json>> | Shows raw PCF application JSON response
+|<<runtime-mgr pcf-application modify>> | Edits an application deployed to PCF space
+|<<runtime-mgr pcf-application start>> | Starts PCF application
 |===
 
 
@@ -292,7 +294,7 @@ In order for the Anypoint Platform CLI to recognize your target servers, each se
 |<<runtime-mgr server modify>> | Modifies server
 |<<runtime-mgr server token>> | Gets server registration token. This token needs to be used to register a new server
 |<<runtime-mgr server delete>> | Deletes server
-|<<runtime-mgr server list>> | Changes an on-premises application artifact
+|<<runtime-mgr server list>> | Changes an standalone application artifact
 // |<<runtime-mgr server register>> | Registers a new server. Returns a signed certificate which is downloaded to the `directory` path
 |===
 
@@ -1265,80 +1267,104 @@ This command tails application logs. +
 You can start typing your application's name and hit `tab` for Anypoint-CLI to autocomplete it, or you can double tap `tab` for a full list of all the values you can pass. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr cloudhub-application upgrade-runtime
+// === runtime-mgr cloudhub-application upgrade-runtime
+//
+// [source,Example]
+// ----
+// > runtime-mgr cloudhub-application upgrade-runtime [options] <name>
+// ----
+//
+// This command upgrades the runtime version of the application passed in `name` to the latest patch version. If the `-v`/`--version` option is used to specify a specific runtime version, this command updates the application's runtime to that version. +
+// Besides the `--version` option, this command also takes the default `--help`, `-f`/`--fields` and `-o`/`--output` options.
+//
+// === runtime-mgr cloudhub-application downgrade-runtime
+//
+// [source,Example]
+// ----
+// > runtime-mgr cloudhub-application downgrade-runtime [options] <name>
+// ----
+// This command downgrades the runtime version of the application passed in `name` to the previous runtime version. If the `-v`/`--version` option is used to specify a specific runtime version, this command updates the application's runtime to that version. +
+// Besides the `--version` option, this command also takes the default `--help`, `-f`/`--fields` and `-o`/`--output` options.
+
+=== runtime-mgr cloudhub-application copy
 
 [source,Example]
 ----
-> runtime-mgr cloudhub-application upgrade-runtime [options] <name>
+> runtime-mgr cloudhub-application copy [options] <source> <target>
 ----
 
-This command upgrades the runtime version of the application passed in `name` to the latest patch version. If the `-v`/`--version` option is used to specify a specific runtime version, this command updates the application's runtime to that version. +
-Besides the `--version` option, this command also takes the default `--help`, `-f`/`--fields` and `-o`/`--output` options.
-
-=== runtime-mgr cloudhub-application downgrade-runtime
+This command copies the CloudHub application passed in `source` to the location passed in `target`. +
+Both arguments `source` and `target` are represented using the format: `<organizationName>:<environmentName>/<appName>`, for example:
 
 [source,Example]
 ----
-> runtime-mgr cloudhub-application downgrade-runtime [options] <name>
+> runtime-mgr standalone-application copy Services:QA/application-1 Development:QA/application-2
 ----
-This command downgrades the runtime version of the application passed in `name` to the previous runtime version. If the `-v`/`--version` option is used to specify a specific runtime version, this command updates the application's runtime to that version. +
-Besides the `--version` option, this command also takes the default `--help`, `-f`/`--fields` and `-o`/`--output` options.
-
-=== runtime-mgr standalone-applications artifact
+Copies the application named `application-1` from the QA environment of the _Services_ organization to the QA environment of the _Development_ organization. +
+If the Anypoint Platform CLI is using the QA environment in the Services organization, the command can simply take the application name as a `source`:
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications artifact [options] <appId> <directory>
+> runtime-mgr standalone-application copy application-1 Development/QA/application-2
+----
+
+This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
+
+=== runtime-mgr standalone-application artifact
+
+[source,Example]
+----
+> runtime-mgr standalone-application artifact [options] <appId> <directory>
 ----
 
 This command downloads the application artifact of the `appId` application, to the directory passed in `directory`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications deploy
+=== runtime-mgr standalone-application deploy
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications deploy [options] <targetId> <name> <zipfile>
+> runtime-mgr standalone-application deploy [options] <targetId> <name> <zipfile>
 ----
 
 This command deploys the application passed as a zip file in the path `zipfile` to the environment passed in `targetId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications describe-json
+=== runtime-mgr standalone-application describe-json
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications describe-json [options] <appId>
+> runtime-mgr standalone-application describe-json [options] <appId>
 ----
 
 This command describes the application passed in `appId` as a raw JSON response. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications modify
+=== runtime-mgr standalone-application modify
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications modify [options] <appId> <zipfile>
+> runtime-mgr standalone-application modify [options] <appId> <zipfile>
 ----
 
-This command modifies the on-premises application passed in `appId` with the zip file application passed in `zipfile` as a path. +
+This command modifies the standalone application passed in `appId` with the zip file application passed in `zipfile` as a path. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications start
+=== runtime-mgr standalone-application start
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications start [options] <appId>
+> runtime-mgr standalone-application start [options] <appId>
 ----
 
 This command starts the application passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications delete
+=== runtime-mgr standalone-application delete
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications delete [options] <appId>
+> runtime-mgr standalone-application delete [options] <appId>
 ----
 
 This command deletes the application passed in `appId`. +
@@ -1347,51 +1373,78 @@ This command does not take any options, except for the default ones: `--help`, `
 [WARNING]
 This command does not prompt twice before deleting. If you send a delete instruction, it does not ask for confirmation.
 
-=== runtime-mgr standalone-applications describe
+=== runtime-mgr standalone-application describe
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications describe [options] <appId>
+> runtime-mgr standalone-application describe [options] <appId>
 ----
 
-This command describes the on-premises application passed in `appId`. +
+This command describes the standalone application passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications list
+=== runtime-mgr standalone-application list
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications list [options]
+> runtime-mgr standalone-application list [options]
 ----
 
-This command lists all on-premises applications. +
+This command lists all standalone applications. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications restart
+=== runtime-mgr standalone-application restart
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications restart [options] <appId>
+> runtime-mgr standalone-application restart [options] <appId>
 ----
 
 This command restarts the application passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr standalone-applications stop
+=== runtime-mgr standalone-application stop
 
 [source,Example]
 ----
-> runtime-mgr standalone-applications stop [options] <appId>
+> runtime-mgr standalone-application stop [options] <appId>
 ----
 
-This command stops the on-premises application passed in `appId`. +
+This command stops the standalone application passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr pcf-applications delete
+=== runtime-mgr standalone-application copy
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications delete [options] <appId>
+> runtime-mgr standalone-application copy [options] <source> <target> <targetId>
+----
+
+This command copies the standalone application passed in `source` to the location passed in `target` and the server, server group or cluster Id passed in `targetId`. +
+Both arguments `source` and `target` are represented using the format: `<organizationName>:<environmentName>/<appName>`, for example:
+
+[source,Example]
+----
+> runtime-mgr standalone-application copy Services:QA/application-1 Development:QA/application-2 123456
+----
+Copies the application named `application-1` from the QA environment of the _Services_ organization to the QA environment of the _Development_ organization in the server Id 123456. +
+If the Anypoint Platform CLI is using the QA environment in the Services organization, the command can simply take the application name as a `source`:
+
+[source,Example]
+----
+> runtime-mgr standalone-application copy application-1 Development/QA/application-2 123456
+----
+
+[NOTE]
+This command requires read/write access to the `/tmp` directory from your on-premises server
+
+This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
+
+=== runtime-mgr pcf-application delete
+
+[source,Example]
+----
+> runtime-mgr pcf-application delete [options] <appId>
 ----
 
 This commands deletes the PCF application passed in `appId`. +
@@ -1400,51 +1453,51 @@ This command does not take any options, except for the default ones: `--help`, `
 [WARNING]
 This command does not prompt twice before deleting. If you send a delete instruction, it does not ask for confirmation.
 
-=== runtime-mgr pcf-applications describe
+=== runtime-mgr pcf-application describe
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications describe [options] <appId>
+> runtime-mgr pcf-application describe [options] <appId>
 ----
 
 This command describes the PCF deployed application passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr pcf-applications list
+=== runtime-mgr pcf-application list
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications list [options]
+> runtime-mgr pcf-application list [options]
 ----
 
 This command lists all your PCF deployed applications. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr pcf-applications restart
+=== runtime-mgr pcf-application restart
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications restart [options] <appId>
+> runtime-mgr pcf-application restart [options] <appId>
 ----
 
 This command restarts your PCF deployed application passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr pcf-applications stop
+=== runtime-mgr pcf-application stop
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications stop [options] <appId>
+> runtime-mgr pcf-application stop [options] <appId>
 ----
 
 This command stops the PCF deployed appplication passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr pcf-applications deploy
+=== runtime-mgr pcf-application deploy
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications deploy [options] <name> <zipfile>
+> runtime-mgr pcf-application deploy [options] <name> <zipfile>
 ----
 
 This command deploys to your PCF instance the application passed in `zipfile` with the name Id passed in `name`. +
@@ -1461,21 +1514,21 @@ Besides the default `--help`, `-f`/`--fields` and `-o`/`--output` options, this 
 | --bindingsFile [sindingsFile] | Overwrite all properties with values from this file. The file format is 1 or more lines in serviceName.key:value format
 |===
 
-=== runtime-mgr pcf-applications describe-json
+=== runtime-mgr pcf-application describe-json
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications describe-json [options] <appId>
+> runtime-mgr pcf-application describe-json [options] <appId>
 ----
 
 This command shows a raw JSON description of the PCF deployed application passed in `appId`. +
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
-=== runtime-mgr pcf-applications modify
+=== runtime-mgr pcf-application modify
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications modify [options] <appId> [zipfile]
+> runtime-mgr pcf-application modify [options] <appId> [zipfile]
 ----
 
 This command modifies the PCF deployed application passed in `appId` with the ZIP file application passed in `zipfile`.
@@ -1493,11 +1546,11 @@ Besides the default `--help`, `-f`/`--fields` and `-o`/`--output` options, this 
 | --bindingsFile [sindingsFile] | Overwrite all properties with values from this file. The file format is 1 or more lines in serviceName.key:value format
 |===
 
-=== runtime-mgr pcf-applications start
+=== runtime-mgr pcf-application start
 
 [source,Example]
 ----
-> runtime-mgr pcf-applications start [options] <appId>
+> runtime-mgr pcf-application start [options] <appId>
 ----
 
 This command starts the PCF deployed application passed in `appId`. +
