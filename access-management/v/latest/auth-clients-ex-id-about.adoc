@@ -1,0 +1,24 @@
+= About Client Authentication with External Identity
+
+As an API owner, you can apply the OAuth 2.0 Access Token Enforcement Using External Provider policy to an API to authenticate client applications that try to access your API. In conjunction with the policy, you need to have a OAuth provider in place. One of the following OAuth providers is recommended:
+
+* OpenAM
+* PingFederate
+
+// * OpenID Connect (add after May 6, khahn 4.14.2017)
+
+// khahn 4.14.2017, moved to aes-oauth-faq.adoc in api-manager image:external-identity-b0a95.png[]
+
+////
+=== Using Authorization and Authentication
+
+To protect a non-trivial resource, two layers, authorization and authentication, are typically used. The client application receives a client ID and the client secret from the API portal of the Anypoint Platform API. These credentials are provided in tandem with the end-user's credentials when creating an access token. Later, using the token introspection endpoint, the OAuth provider both verifies the validity of the access token and the identity of the client that originally created it.
+
+////
+
+
+== See Also
+
+* link:/api-manager/aes-oauth-faq[About OAuth 2.0]
+
+
