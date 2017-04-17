@@ -674,9 +674,24 @@ You can create a tier using the <<api-mgr tiers add>> command.
 > api-mgr definition copy [options] <source> <target>
 ----
 
-This command copies the definition of the API passed in `source` to the API passed in `target`. Both arguments must follow the format `[<org>/]<api/version>`.
+This command copies the definition from the API passed in `source` to the API passed in `target`. +
+Both arguments `source` and `target` are represented using the format: `<organizationName>/<apiName>/<apiVersion>`, for example:
 
+[source,Example]
+----
+> api-mgr definition copy Services/api-1/1.0 Development/api-1/1.0
+----
 
+Copies the definition of the API named `api-1` and version `1.0` from _Services_ organization to the _Development_ organization. +
+If the Anypoint Platform CLI is using the Services organization, the command can simply take the application name as a `source`:
+
+[source,Example]
+----
+> api-mgr definition copy api-1/1.0 Development/api-1/1.0
+----
+
+[NOTE]
+For API Manager installations in Anypoint Private Cloud Edition, this command requires read/write access to the `/tmp` directory in your on-premises server
 
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
@@ -786,7 +801,25 @@ You can use the <<api-mgr policy describe>> option to check the default field na
 > api-mgr policy copy [options] <source> <target>
 ----
 
-This command copies the policy from the API passed in `source` to the API passed in `target`. Both arguments must follow the format `[<org>/]<api/version>`.
+This command copies the policy from the API passed in `source` to the API passed in `target`. +
+Both arguments `source` and `target` are represented using the format: `<organizationName>/<apiName>/<apiVersion>`, for example:
+
+[source,Example]
+----
+> api-mgr policy copy Services/api-1/1.0 Development/api-1/1.0
+----
+
+Copies the policy of the API named `api-1` and version `1.0` from _Services_ organization to the _Development_ organization. +
+If the Anypoint Platform CLI is using the Services organization, the command can simply take the application name as a `source`:
+
+[source,Example]
+----
+> api-mgr definition copy api-1/1.0 Development/api-1/1.0
+----
+
+[NOTE]
+For API Manager installations in Anypoint Private Cloud Edition, this command requires read/write access to the `/tmp` directory in your on-premises server
+
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
 === api-mgr policy describe
@@ -902,7 +935,24 @@ This command does not take any options, except for the default ones: `--help`, `
 > api-mgr portal copy [options] <source> <target>
 ----
 
-This command copies the API Portal from the API passed in `source` to the API passed in `target`. Both arguments must follow the format `[<org>/]<api/version>`.
+This command copies the API Portal from the API passed in `source` to the API passed in `target`. +
+Both arguments `source` and `target` are represented using the format: `<organizationName>/<apiName>/<apiVersion>`, for example:
+
+[source,Example]
+----
+> api-mgr portal copy Services/api-1/1.0 Development/api-1/1.0
+----
+
+Copies the API portal of the API named `api-1` and version `1.0` from _Services_ organization to the _Development_ organization. +
+If the Anypoint Platform CLI is using the Services organization, the command can simply take the application name as a `source`:
+
+[source,Example]
+----
+> api-mgr portal copy api-1/1.0 Development/api-1/1.0
+----
+
+[NOTE]
+For API Manager installations in Anypoint Private Cloud Edition, this command requires read/write access to the `/tmp` directory in your on-premises server
 
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
@@ -967,14 +1017,30 @@ E.g. `-l true,100,sec -l false,20,min`
 
 |===
 
-
 === api-mgr tiers copy
 
 [source,Example]
 ----
 > api-mgr tiers copy [options] <source> <target>
 ----
-This command copies the SLA tier from the API passed in `source` to the API passed in `target`. Both arguments must follow the format `[<org>/]<api/version>`.
+This command copies the SLA tier from the API passed in `source` to the API passed in `target`. +
+Both arguments `source` and `target` are represented using the format: `<organizationName>/<apiName>/<apiVersion>`, for example:
+
+[source,Example]
+----
+> api-mgr tiers copy Services/api-1/1.0 Development/api-1/1.0
+----
+
+Copies the tier of the API named `api-1` and version `1.0` from _Services_ organization to the _Development_ organization. +
+If the Anypoint Platform CLI is using the Services organization, the command can simply take the application name as a `source`:
+
+[source,Example]
+----
+> api-mgr tiers copy api-1/1.0 Development/api-1/1.0
+----
+
+[NOTE]
+For API Manager installations in Anypoint Private Cloud Edition, this command requires read/write access to the `/tmp` directory in your on-premises server
 
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
@@ -1298,14 +1364,14 @@ Both arguments `source` and `target` are represented using the format: `<organiz
 
 [source,Example]
 ----
-> runtime-mgr standalone-application copy Services:QA/application-1 Development:QA/application-2
+> runtime-mgr cloudhub-application copy Services:QA/application-1 Development:QA/application-2
 ----
 Copies the application named `application-1` from the QA environment of the _Services_ organization to the QA environment of the _Development_ organization. +
 If the Anypoint Platform CLI is using the QA environment in the Services organization, the command can simply take the application name as a `source`:
 
 [source,Example]
 ----
-> runtime-mgr standalone-application copy application-1 Development/QA/application-2
+> runtime-mgr cloudhub-application copy application-1 Development/QA/application-2
 ----
 
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
@@ -1436,7 +1502,7 @@ If the Anypoint Platform CLI is using the QA environment in the Services organiz
 ----
 
 [NOTE]
-This command requires read/write access to the `/tmp` directory from your on-premises server
+This command requires read/write access to the `/tmp` directory in your on-premises server
 
 This command does not take any options, except for the default ones: `--help`, `-f`/`--fields` and `-o`/`--output`.
 
